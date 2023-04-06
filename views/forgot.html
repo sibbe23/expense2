@@ -38,7 +38,7 @@
 
     }
     console.log(userDetails)
-  await  axios.post('http://localhost:4000/password/forgotpassword',userDetails).then(response => {
+  await  axios.post('http://44.203.151.183:4000/password/forgotpassword',userDetails).then(response => {
         if(response.status === 202){
             document.body.innerHTML += '<div style="color:red;">Mail Successfuly sent <div>'
         } else {
