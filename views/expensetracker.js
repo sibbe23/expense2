@@ -17,6 +17,7 @@ async function addNewExpense(e){
 
 }catch(err){console.log(err)}}
 
+
 function showPremiumuserMessage() {
     try{
     document.getElementById('rzp-button1').style.visibility = "hidden"
