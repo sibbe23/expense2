@@ -35,7 +35,6 @@
 
     const userDetails = {
         email: form.get("email"),
-
     }
     console.log(userDetails)
     axios.post('http://44.203.151.183:4000/password/forgotpassword',userDetails).then(response => {

@@ -53,7 +53,6 @@ async function login(e){
         }
 
         console.log(loginDetails)
-
        const response =  await axios.post('http://44.203.151.183:4000/user/login',loginDetails)
                 alert(response.data.message)
                 console.log(response.data)

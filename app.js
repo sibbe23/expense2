@@ -44,7 +44,6 @@ app.use((req, res) => {
       res.sendFile(path.join(__dirname, `views/${req.url}`));
     })
 
-
 //userid
 User.hasMany(Expense)
 Expense.belongsTo(User)
