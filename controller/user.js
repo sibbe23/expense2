@@ -13,11 +13,6 @@ const signup = async(req,res)=>{
     try{
     const {name,email,password} = req.body;
         console.log('email',email)
-        const dateObj = new Date();
-        const month = dateObj.getUTCMonth()+1;
-        const day = dateObj.getUTCDate();
-        const year = dateObj.getUTCFullYear()
-        const newDate = year+'/'+month+'/'+day;
     if(stringvalidator(name) || stringvalidator(email) || stringvalidator(password) )
        {
          return res.status(400).json({err:'Fields left empty'})
@@ -25,8 +20,8 @@ const signup = async(req,res)=>{
         // const saltrounds = 10;
         bcrypt.hash(password,10,async(err,hash)=>{
             console.log(err)
-            await User.create({name,email,password:hash})
-            res.status(201).json({message:'Success'})
+            await User.create({name,email,password:hash}).then(res=>console.log(res)).catch(err=>console.log(err))
+           return res.status(201).json({message:'Success'})
         })     
     }catch(err){
         res.status(500).json(err);
