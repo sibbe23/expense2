@@ -38,6 +38,24 @@ background-position: center;">
         </div>
     </form>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-    <script src ="./expensetracker.js"></script>
+    <script >
+        async function signup(e){
+    try{
+    e.preventDefault();
+    const userDetails = {
+        name:e.target.name.value,
+        email:e.target.email.value,
+        password:e.target.password.value
+    }
+    
+    console.log(userDetails)
+
+   const response = await axios.post('http://localhost:4000/user/signup',userDetails)
+        window.location.replace("./login.html")
+}catch(err){
+    document.body.innerHTML +=`<div style="color:red">${err.message}</div>`;
+    }
+}
+    </script>
 </body>
 </html>

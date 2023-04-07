@@ -22,13 +22,13 @@
         </div>
         <button type="submit" class="lobtn"> Send Mail</button>
     </form>
-    <button onclick="history.back()" class="fobtn">Back</button>
+    <button class="fobtn"><a href="login.html">Back</a></button>
     <br>
     <br>
 </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      async  function forgotpassword(e) {
+ function forgotpassword(e) {
     e.preventDefault();
     console.log(e.target.name);
     const form = new FormData(e.target);
@@ -38,12 +38,8 @@
 
     }
     console.log(userDetails)
-  await  axios.post('http://44.203.151.183:4000/password/forgotpassword',userDetails).then(response => {
-        if(response.status === 202){
+    axios.post('http://localhost:4000/password/forgotpassword',userDetails).then(response => {
             document.body.innerHTML += '<div style="color:red;">Mail Successfuly sent <div>'
-        } else {
-            throw new Error('Something went wrong!!!')
-        }
     }).catch(err => {
         document.body.innerHTML += `<div style="color:red;">${err} <div>`;
     })

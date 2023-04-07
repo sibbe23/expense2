@@ -40,6 +40,11 @@ app.use('/purchase',purchaseRoutes)
 app.use('/premium',premiumFeatureRoutes)
 app.use('/password', resetPasswordRoutes);
 
+app.use((req, res) => {
+      res.sendFile(path.join(__dirname, `views/${req.url}`));
+    })
+
+
 //userid
 User.hasMany(Expense)
 Expense.belongsTo(User)
@@ -51,10 +56,6 @@ User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
 
 
-app.use((req, res) => {
-    console.log(req.url)
-        res.sendFile(path.join(__dirname +`/views/${req.url}`));
-    });
 
 
 sequelize.sync().then(res=>{

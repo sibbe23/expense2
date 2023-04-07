@@ -33,8 +33,8 @@ const forgotpassword = async (req, res) => {
                          tranEmailApi.sendTransacEmail({
                              sender,
                              to:receivers,
-                             subject:'Hello there',
-                             htmlContent:`<a href="http://localhost:4000/password/resetpassword/${id}">Click here to reset password</a>`,
+                             subject:'Reset Password',
+                             htmlContent:`<a>Click <a href="http://localhost:4000/password/resetpassword/${id}">here</a> to reset your password for E-Tracker</a>`,
                          })
                       
         }else {
