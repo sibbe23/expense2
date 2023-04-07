@@ -1,4 +1,5 @@
 
+        
 async function addNewExpense(e){
     try{
     e.preventDefault();
@@ -11,13 +12,13 @@ async function addNewExpense(e){
     }
     console.log(expenseDetails)
     const token = localStorage.getItem('token')
-   const expense= await axios.post('http://localhost:4000/expense/addexpense',expenseDetails,{headers:{'Authorization':token}})
+   const expense= await axios.post('http://44.203.151.183:4000/expense/addexpense',expenseDetails,{headers:{'Authorization':token}})
     console.log(expense)
 }catch(err){console.log(err)}}
 function showPremiumuserMessage() {
     try{
     document.getElementById('rzp-button1').style.visibility = "hidden"
-    document.getElementById('message').innerHTML = `<h4 class="text-center text-success"> &nbsp; Premium Activated</h4>`}
+    document.getElementById('message').innerHTML = `<h4 class="text-center text-dark"> &nbsp; Premium Activated</h4>`}
     catch(err){console.log(err)}
 }
 function parseJwt (token) {
@@ -41,17 +42,13 @@ window.addEventListener('DOMContentLoaded',async()=>{
         showPremiumuserMessage()
         showLeaderboard()
     }
-    if(token){
-   const response = await axios.get(`http://localhost:4000/expense/data?page=${page}=${ltd}`,{headers:{'Authorization':token}})
+   const response = await axios.get(`http://44.203.151.183:4000/expense/data?page=${page}=${ltd}`,{headers:{'Authorization':token}})
         console.log(response)
         // response.data.expenses.forEach(response=>            addNewExpensetoUI(response)
         // )
-        fetchExpenses(response)
-            showPagination(response)
-        }
-        else{
-            location.replace('./login.html')
-        }
+        addExpenseToUi(response)
+            pagination(response)
+        
 }catch(err){
     console.log(err)
 }})
@@ -74,7 +71,7 @@ window.addEventListener('DOMContentLoaded',async()=>{
 //     }
 //     const tbodyElem = document.querySelector('tbody')
 //     const expenseElemId = `expense-${expense.id}`;
-//         tbodyElem.innerHTML +=`<tr id='${expenseElemId}' class="text-success datas">
+//         tbodyElem.innerHTML +=`<tr id='${expenseElemId}' class="text-dark datas">
 //         <td>${txt}</td>
 //         <td>${expense.expenseamount}</td>
 //         <td>${expense.category}</td>
@@ -90,7 +87,7 @@ window.addEventListener('DOMContentLoaded',async()=>{
 function deleteExpense(e,expenseid){
     try{
     const token = localStorage.getItem('token')
-    axios.delete(`http://localhost:4000/expense/deleteexpense/${expenseid}`,{headers:{'Authorization':token}})
+    axios.delete(`http://44.203.151.183:4000/expense/deleteexpense/${expenseid}`,{headers:{'Authorization':token}})
     .then(()=>{
         removeExpensefromUI(expenseid);
     })
@@ -111,21 +108,20 @@ function removeExpensefromUI(expenseid){
 document.getElementById('rzp-button1').onclick = async function (e) {
     try{
     const token = localStorage.getItem('token')
-    const response  = await axios.get('http://localhost:4000/purchase/premiummembership', { headers: {"Authorization" : token} });
+    const response  = await axios.get('http://44.203.151.183:4000/purchase/premiummembership', { headers: {"Authorization" : token} });
     console.log(response);
     var options =
     {
      "key": response.data.key_id,
      "order_id": response.data.order.id,
      "handler": async function (response) {
-        const res = await axios.post('http://localhost:4000/purchase/updatetransactionstatus',{
+        const res = await axios.post('http://44.203.151.183:4000/purchase/updatetransactionstatus',{
              order_id: options.order_id,
              payment_id: response.razorpay_payment_id,
          }, { headers: {"Authorization" : token} })
         
         console.log(res)
          alert('You are a Premium User Now')
-         window.location.reload()
          document.getElementById('rzp-button1').style.visibility = "hidden"
          document.getElementById('message').innerHTML = "You are a premium user "
          localStorage.setItem('token', res.data.token)
@@ -150,11 +146,11 @@ function showLeaderboard(){
     inputElement.onclick = async() => {
         inputElement.style.visibility="hidden"
         const token = localStorage.getItem('token')
-        const userLeaderBoardArray = await axios.get('http://localhost:4000/premium/showLeaderBoard', { headers: {"Authorization" : token} })
+        const userLeaderBoardArray = await axios.get('http://44.203.151.183:4000/premium/showLeaderBoard', { headers: {"Authorization" : token} })
         console.log(userLeaderBoardArray)
 
         var leaderboardElem = document.getElementById('leaderboard')
-        leaderboardElem.innerHTML += '<h1 class="text-primary"> Leader Board </h1>'
+        leaderboardElem.innerHTML += '<h1 class="text-dark"> Leader Board </h1>'
         userLeaderBoardArray.data.forEach((userDetails) => {
             leaderboardElem.innerHTML += `<li>Name : ${userDetails.name} &nbsp;&nbsp; Total Expense : ${userDetails.totalExpenses || 0} </li>`
         })
@@ -181,7 +177,7 @@ download()
 function download(){
     try{
     const token = localStorage.getItem('token')
-    axios.get('http://localhost:4000/expense/download', { headers: {"Authorization" : token} })
+    axios.get('http://44.203.151.183:4000/expense/download', { headers: {"Authorization" : token} })
     .then((response) => {
         if(response.status === 200){
             var a = document.createElement("a");
@@ -202,8 +198,32 @@ const setRow = () => {
     let row = document.getElementById('rowOptions').value;
     localStorage.setItem("row", row);
   }catch(err){console.log(err)}}
-  //Pagination
-const showPagination = async (response) => {
+  
+  const addExpenseToUi = (response)=>{
+    try{
+    let expense = response.data.expenses
+    // console.log(expense)
+    for(let i=0;i<expense.length;i++){
+        const tr = document.createElement('tr')
+        const th = document.createElement("th");
+        const td = document.createElement("td");
+        const td1 = document.createElement("td");
+        const td2 = document.createElement("td");
+        const td3 = document.createElement("td");
+        const td4 = document.createElement("td");
+        const tbody = document.querySelector('.tbody')
+        th.appendChild(document.createTextNode(i + 1));tr.appendChild(th);
+        td.appendChild(document.createTextNode(expense[i].expenseamount));tr.appendChild(td);
+        td1.appendChild(document.createTextNode(expense[i].category));tr.appendChild(td1);
+        td2.appendChild(document.createTextNode(expense[i].description));tr.appendChild(td2);
+        td3.appendChild(document.createTextNode(expense[i].income));tr.appendChild(td3)
+        td4.innerHTML+=` <button class="btn btn-danger"onclick='deleteExpense(event, ${expense[i].id})'>Delete Expense</button>`
+        tr.appendChild(td4);tbody.appendChild(tr)
+    }
+  }
+  catch(err){console.log(err)}}
+
+const pagination = async (response) => {
     try{
     const pagination = document.getElementById('paginations')
     pagination.innerHTML = "";
@@ -214,7 +234,7 @@ const showPagination = async (response) => {
       btn.innerHTML = response.data.previousPage;
       await btn.addEventListener("click", () =>
        {
-        getExpense(response.data.previousPage)
+        paginatedResults(response.data.previousPage)
        });
       pagination.appendChild(btn);
     }
@@ -223,7 +243,7 @@ const showPagination = async (response) => {
     btn1.innerHTML = `<h3>${response.data.currentPage}</h3>`;
      btn1.addEventListener("click", async() =>
      {
-    await getExpense(response.data.currentPage)
+    await paginatedResults(response.data.currentPage)
      });
     pagination.appendChild(btn1);
     if (response.data.hasNextPage)
@@ -233,48 +253,19 @@ const showPagination = async (response) => {
       btn2.innerHTML = response.data.nextPage;
       btn2.addEventListener("click", async () => 
       {
-        await getExpense(response.data.nextPage);
+        await paginatedResults(response.data.nextPage);
       });
       pagination.appendChild(btn2);
     }
   }catch(err){console.log(err)}}
   const token = localStorage.getItem('token')
-  const getExpense = async(page) => {
+  const paginatedResults = async(page) => {
     try{
     const ltd = localStorage.getItem("row");
-const expense = await axios.get(`http://localhost:4000/expense/data?page=${page}=${ltd}`, { headers: { 'Authorization': token }})
+const expense = await axios.get(`http://44.203.151.183:4000/expense/data?page=${page}=${ltd}`, { headers: { 'Authorization': token }})
         console.log(expense)
-    await fetchExpenses(expense)
-     await  showPagination(expense);
+    await addExpenseToUi(expense)
+     await  pagination(expense);
 
   }    catch(err){console.log(err)}}       
-  const fetchExpenses = (response)=>{
-    try{
-    let expense = response.data.expenses
-    // console.log(expense)
-    for(let i=0;i<expense.length;i++){
-        let tr = document.createElement('tr')
-        let th = document.createElement("th");
-        let td = document.createElement("td");
-        let td1 = document.createElement("td");
-        let td2 = document.createElement("td");
-        let td3 = document.createElement("td");
-        let td4 = document.createElement("td");
-        let tbody = document.querySelector('.tbody')
-        th.setAttribute("scope", "row");
-        th.appendChild(document.createTextNode(i + 1));
-        tr.appendChild(th);
-        td.appendChild(document.createTextNode(expense[i].expenseamount));
-        tr.appendChild(td);
-        td1.appendChild(document.createTextNode(expense[i].category));
-        tr.appendChild(td1);
-        td2.appendChild(document.createTextNode(expense[i].description));
-        tr.appendChild(td2);
-        td3.appendChild(document.createTextNode(expense[i].income))
-        tr.appendChild(td3)
-        td4.innerHTML+=` <button class="btn btn-danger"onclick='deleteExpense(event, ${expense[i].id})'>Delete Expense</button>`
-        tr.appendChild(td4)
-        tbody.appendChild(tr)
-    }
-  }
-  catch(err){console.log(err)}}
+  

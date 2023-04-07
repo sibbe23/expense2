@@ -30,7 +30,7 @@ background-position: center;">
         <button class="lobtn">Login</button>
     </form>
 <div class="pass">
-    <button onclick="forgotpassword()" class="fobtn"> Forgot password</button>
+    <button class="fobtn"> <a href="forgot.html">Forgot password</a></button>
 </div>
  <div class="signup_link">   
     <p>New User? <a href="signup.html">Sign up</a></p>
@@ -54,12 +54,12 @@ async function login(e){
 
         console.log(loginDetails)
 
-       const response =  await axios.post('http://localhost:4000/user/login',loginDetails)
+       const response =  await axios.post('http://44.203.151.183:4000/user/login',loginDetails)
                 alert(response.data.message)
                 console.log(response.data)
                 localStorage.setItem('token',response.data.token)
                 localStorage.setItem('userDetails',JSON.stringify(response.data.user))
-                window.location.href="/views/index.html"
+                window.location.href="index.html"
     }
     catch(err){
         console.log(JSON.stringify(err))
@@ -67,12 +67,6 @@ async function login(e){
     }
 }
 
-function forgotpassword() {
-    try{
-    window.location.href = "./forgot.html"
-}catch(err){
-    console.log(err)
-}}
 </script>
     
 </body>
