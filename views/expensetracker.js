@@ -14,6 +14,7 @@ async function addNewExpense(e){
     const token = localStorage.getItem('token')
    const expense= await axios.post('http://44.203.151.183:4000/expense/addexpense',expenseDetails,{headers:{'Authorization':token}})
     console.log(expense)
+    
 }catch(err){console.log(err)}}
 function showPremiumuserMessage() {
     try{
