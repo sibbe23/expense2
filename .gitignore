@@ -1,7 +1,3 @@
-awscredentials/expenseTracker.pem
+
 access.log
-
-
-
-aws/etrackerkeypair.pem
-aws/etracker_key.pem
+aws/etrackerkey.pem

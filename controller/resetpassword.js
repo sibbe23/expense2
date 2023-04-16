@@ -34,7 +34,7 @@ const forgotpassword = async (req, res) => {
                              sender,
                              to:receivers,
                              subject:'Reset Password',
-                             htmlContent:`<a>Click <a href="http://54.88.101.55:4000/password/resetpassword/${id}">here</a> to reset your password for E-Tracker</a>`,
+                             htmlContent:`<a>Click <a href="http://localhost:4000/password/resetpassword/${id}">here</a> to reset your password for E-Tracker</a>`,
                          })
                       
         }else {
