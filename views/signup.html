@@ -51,7 +51,7 @@ background-position: center;">
     
     console.log(userDetails)
 
-   const response = await axios.post('http://localhost:4000/user/signup',userDetails)
+   const response = await axios.post('http://54.145.244.191:4000/user/signup',userDetails)
         window.location.replace("./login.html")
 }catch(err){
     document.body.innerHTML +=`<div style="color:red">${err.message}</div>`;
