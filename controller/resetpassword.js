@@ -18,7 +18,7 @@ const forgotpassword = async (req, res) => {
 
                 const client = Sib.ApiClient.instance
                 const apiKey = client.authentications['api-key']
-                apiKey.apiKey = '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'
+                apiKey.apiKey = process.env.API_KEY
                 const tranEmailApi = new Sib.TransactionalEmailsApi()
                 const sender ={
                         email:'sibbe.sharpener@gmail.com',
@@ -35,7 +35,8 @@ const forgotpassword = async (req, res) => {
                              to:receivers,
                              subject:'Reset Password',
                              htmlContent:`<a>Click <a href="http://52.90.42.159:4000/password/resetpassword/${id}">here</a> to reset your password for E-Tracker</a>`,
-                         })
+                         }).then(result=>console.log(result))
+                         .catch(err=>console.log(err))
                       
         }else {
             throw new Error('User doesnt exist')
