@@ -37,7 +37,7 @@
         email: form.get("email"),
     }
     console.log(userDetails)
-    axios.post('http://54.145.244.191:4000/password/forgotpassword',userDetails).then(response => {
+    axios.post('http://52.90.42.159:4000/password/forgotpassword',userDetails).then(response => {
             document.body.innerHTML += '<div style="color:red;">Mail Successfuly sent <div>'
     }).catch(err => {
         document.body.innerHTML += `<div style="color:red;">${err} <div>`;
